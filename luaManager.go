@@ -33,9 +33,9 @@ func CallBackGoWithParamResult(L *lua.State) int {
 	return 2
 }
 
+// LuaPool 在这里可以设定几个不同的luapool，比如AI，副本等
 var LuaPool = sync.Pool{
 	New: func() interface{} {
-		println("new")
 		L := lua.NewState()
 		L.OpenLibs()
 		L.DoFile("./main.lua")
