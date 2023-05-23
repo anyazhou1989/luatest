@@ -1,9 +1,6 @@
 package main
 
-import (
-	"github.com/aarzilli/golua/lua"
-	"sync"
-)
+import "github.com/aarzilli/golua/lua"
 
 //
 ////type I1 interface {
@@ -112,43 +109,6 @@ import (
 //		nums[i] = rand.Int()
 //	}
 //}
-
-func CallBackGo(L *lua.State) int {
-	println("anyazhou go")
-	return 0
-}
-
-func CallBackGoWithParam(L *lua.State) int {
-	arg1 := L.ToString(1)
-	arg2 := L.ToString(2)
-	println(arg1 + arg2)
-	return 0
-}
-
-func CallBackGoWithParamResult(L *lua.State) int {
-	arg1 := L.ToString(1)
-	arg2 := L.ToString(2)
-	result := arg1 + arg2
-	L.PushString(result)
-	L.PushString("success")
-
-	return 2
-}
-
-var LuaPool = sync.Pool{
-	New: func() interface{} {
-		println("new")
-		L := lua.NewState()
-		L.OpenLibs()
-		L.DoFile("./main.lua")
-
-		L.Register("CallBackGo", CallBackGo)
-		L.Register("CallBackGoWithParam", CallBackGoWithParam)
-		L.Register("CallBackGoWithParamResult", CallBackGoWithParamResult)
-
-		return L
-	},
-}
 
 func main() {
 	L := LuaPool.Get().(*lua.State)
